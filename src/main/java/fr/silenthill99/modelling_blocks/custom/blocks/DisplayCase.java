@@ -10,28 +10,49 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class DisplayCase extends RotatedPillarBlock {
+public class DisplayCase extends Block {
+
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     public DisplayCase(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
-    DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final VoxelShape SHAPES_NORTH = Shapes.or(
+            box(2, 0, 2, 14, 1, 14),
+            box(4, 1, 4, 12, 22, 12),
+            box(3, 22, 3, 13, 23, 13),
+            box(3, 23, 12, 13, 24, 13)
+    );
+    public static final VoxelShape SHAPES_SOUTH = Shapes.or(
+            box(2, 0, 2, 14, 1, 14),
+            box(4, 1, 4, 12, 22, 12),
+            box(3, 22, 3, 13, 23, 13),
+            box(3, 23, 3, 13, 24, 4)
+    );
+    public static final VoxelShape SHAPES_EAST = Shapes.or(
+            box(2, 0, 2, 14, 1, 14),
+            box(4, 1, 4, 12, 22, 12),
+            box(3, 22, 3, 13, 23, 13),
+            box(3, 23, 3, 4, 24, 13)
+    );
 
-    public static final VoxelShape SHAPES_NORTH = makeNorthShape();
-    public static final VoxelShape SHAPES_SOUTH = makeSouthShape();
-    public static final VoxelShape SHAPES_EAST = makeEastShape();
-    public static final VoxelShape SHAPES_WEST = makeWestShape();
+    public static final VoxelShape SHAPES_WEST = Shapes.or(
+            box(2, 0, 2, 14, 1, 14),
+            box(4, 1, 4, 12, 22, 12),
+            box(3, 22, 3, 13, 23, 13),
+            box(12, 23, 3, 13, 24, 13)
+    );
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         switch (pState.getValue(FACING)){
             case SOUTH -> {
                 return SHAPES_SOUTH;
@@ -48,18 +69,8 @@ public class DisplayCase extends RotatedPillarBlock {
         }
     }
 
-    public static VoxelShape makeNorthShape(){
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.125, 0.875, 0.0625, 0.875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.25, 0.0625, 0.25, 0.75, 1.375, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 1.375, 0.1875, 0.8125, 1.4375, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 1.4375, 0.75, 0.8125, 1.5, 0.8125), BooleanOp.OR);
-
-        return shape;
-    }
-
     @Override
-    public BlockState mirror(BlockState pState, Mirror pMirror) {
+    public @NotNull BlockState mirror(BlockState pState, Mirror pMirror) {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 
@@ -75,37 +86,7 @@ public class DisplayCase extends RotatedPillarBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
         pBuilder.add(FACING);
-    }
-
-    public static VoxelShape makeSouthShape(){
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.125, 0.875, 0.0625, 0.875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.25, 0.0625, 0.25, 0.75, 1.375, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 1.375, 0.1875, 0.8125, 1.4375, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 1.4375, 0.1875, 0.8125, 1.5, 0.25), BooleanOp.OR);
-
-        return shape;
-    }
-
-    public static VoxelShape makeEastShape(){
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.125, 0.875, 0.0625, 0.875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.25, 0.0625, 0.25, 0.75, 1.375, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 1.375, 0.1875, 0.8125, 1.4375, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 1.4375, 0.1875, 0.25, 1.5, 0.8125), BooleanOp.OR);
-
-        return shape;
-    }
-
-    public static VoxelShape makeWestShape(){
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.125, 0.875, 0.0625, 0.875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.25, 0.0625, 0.25, 0.75, 1.375, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 1.375, 0.1875, 0.8125, 1.4375, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.75, 1.4375, 0.1875, 0.8125, 1.5, 0.8125), BooleanOp.OR);
-
-        return shape;
+        super.createBlockStateDefinition(pBuilder);
     }
 }
