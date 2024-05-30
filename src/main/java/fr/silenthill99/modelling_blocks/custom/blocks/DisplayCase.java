@@ -1,7 +1,6 @@
 package fr.silenthill99.modelling_blocks.custom.blocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
@@ -21,7 +20,6 @@ public class DisplayCase extends Block {
 
     public DisplayCase(Properties pProperties) {
         super(pProperties);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
     public static final VoxelShape SHAPES_NORTH = Shapes.or(
@@ -76,6 +74,5 @@ public class DisplayCase extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(FACING);
-        super.createBlockStateDefinition(pBuilder);
     }
 }
