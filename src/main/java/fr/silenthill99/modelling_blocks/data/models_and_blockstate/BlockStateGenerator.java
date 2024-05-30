@@ -15,13 +15,18 @@ public class BlockStateGenerator extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        directionalBlock(ModBlocks.DISPLAY_CASE.get(),
-                new ModelFile.UncheckedModelFile(modLoc("block/display_case")), 0);
+        horizontalBlock(ModBlocks.DISPLAY_CASE.get(), new ModelFile.UncheckedModelFile(modLoc("block/display_case")));
     }
 
     @Override
     public void directionalBlock(Block block, ModelFile model, int angleOffset) {
         super.directionalBlock(block, model, angleOffset);
+        simpleBlockItem(block, model);
+    }
+
+    @Override
+    public void horizontalBlock(Block block, ModelFile model) {
+        super.horizontalBlock(block, model);
         simpleBlockItem(block, model);
     }
 }

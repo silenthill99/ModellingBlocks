@@ -1,16 +1,19 @@
 {
   "variants": {
-    "axis=x": {
+    "facing=east": {
       "model": "modelling_blocks:block/display_case",
-      "x": 90,
       "y": 90
     },
-    "axis=y": {
+    "facing=north": {
       "model": "modelling_blocks:block/display_case"
     },
-    "axis=z": {
+    "facing=south": {
       "model": "modelling_blocks:block/display_case",
-      "x": 90
+      "y": 180
+    },
+    "facing=west": {
+      "model": "modelling_blocks:block/display_case",
+      "y": 270
     }
   }
 }
